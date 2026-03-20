@@ -2,44 +2,159 @@
 <html lang="lv">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>Treasure Map</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slepenā Misija: Bachs</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
-            background-color: #1a1a1a; /* Tumšs fons, lai karte "lec" ārā */
+            background-color: #1a1a1a;
+            color: #fce029;
+            font-family: 'Courier New', Courier, monospace;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            overflow-x: hidden; /* Neļauj lapai "šūpoties" pa labi/kreisi */
+            text-align: center;
+            overflow-x: hidden;
         }
 
-        .map-container {
+        #quiz-container {
+            padding: 30px;
+            max-width: 500px;
+            width: 95%;
+            border: 3px solid #fce029;
+            border-radius: 20px;
+            background: rgba(0,0,0,0.85);
+            box-shadow: 0 0 30px rgba(252, 224, 41, 0.4);
+            transition: all 0.5s ease;
+        }
+
+        h2 { margin-bottom: 20px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 2px; opacity: 0.8; }
+        h1 { margin-bottom: 20px; font-size: 1.4rem; line-height: 1.4; }
+        
+        a { color: #00ff00; text-decoration: underline; }
+
+        input {
             width: 100%;
-            padding: 10px; /* Mazas maliņas, lai bilde nepieliptu pie ekrāna rāmja */
-            display: flex;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 2px solid #fce029;
+            border-radius: 10px;
+            background: #222;
+            color: #fff;
+            font-size: 1.1rem;
+            text-align: center;
+            outline: none;
+        }
+
+        button {
+            padding: 12px 35px;
+            background: #fce029;
+            color: #000;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: transform 0.1s;
+        }
+
+        button:active { transform: scale(0.95); }
+
+        #map-container {
+            display: none;
+            width: 100%;
+            height: 100vh;
             justify-content: center;
+            align-items: center;
+            padding: 10px;
+            background-color: #121212;
         }
 
         img {
-            max-width: 100%; /* Bilde nekad nebūs platāka par ekrānu */
-            height: auto;    /* Saglabā proporcijas */
-            border-radius: 8px; /* Maigi noapaļoti stūri modernākam skatam */
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5); /* Dziļuma efekts */
+            max-width: 100%;
+            max-height: 95vh;
+            border-radius: 15px;
+            box-shadow: 0 0 60px rgba(0,0,0,1);
+            animation: reveal 1.2s cubic-bezier(0.17, 0.67, 0.83, 0.67);
         }
+
+        @keyframes reveal {
+            from { opacity: 0; transform: scale(0.5) rotate(-5deg); filter: brightness(0); }
+            to { opacity: 1; transform: scale(1) rotate(0deg); filter: brightness(1); }
+        }
+
+        #error-msg { color: #ff4d4d; margin-top: 15px; font-weight: bold; visibility: hidden; min-height: 20px; }
     </style>
 </head>
 <body>
 
-    <div class="map-container">
-        <img src="map.jpg" alt="Minion Treasure Map">
+    <div id="quiz-container">
+        <h2 id="step-title">1. LĪMENIS: IDENTIFIKĀCIJA</h2>
+        <h1 id="question-text">Cik gadi ir Bacham?</h1>
+        <input type="text" id="userInput" placeholder="Atbilde..." autocomplete="off">
+        <br>
+        <button onclick="handleStep()">PĀRBAUDĪT</button>
+        <p id="error-msg">PIEEJA LIEGTA!</p>
     </div>
+
+    <div id="map-container">
+        <img src="map.jpg" alt="Treasure Map">
+    </div>
+
+    <script>
+        let currentStep = 1;
+
+        function handleStep() {
+            const inputField = document.getElementById('userInput');
+            const val = inputField.value.trim().toLowerCase();
+            const error = document.getElementById('error-msg');
+            const title = document.getElementById('step-title');
+            const question = document.getElementById('question-text');
+
+            error.style.visibility = "hidden";
+
+            if (currentStep === 1) {
+                if (val === "43") {
+                    currentStep = 2;
+                    title.innerText = "2. LĪMENIS: KRIPTO ANALĪZE";
+                    question.innerText = "Kura kripto valūta ir scam?";
+                    clearInput();
+                } else { showError(); }
+            } 
+            else if (currentStep === 2) {
+                if (val === "sol") {
+                    currentStep = 3;
+                    title.innerText = "3. LĪMENIS: FINĀLA PĀRBAUDE";
+                    question.innerHTML = 'Vai šī mājas lapa ir veidota ar AI?<br><a href="https://vicinfo.lv/" target="_blank">vicinfo.lv</a>';
+                    clearInput();
+                } else { showError(); }
+            }
+            else if (currentStep === 3) {
+                if (val === "jā" || val === "ja") {
+                    document.getElementById('quiz-container').style.display = 'none';
+                    document.getElementById('map-container').style.display = 'flex';
+                } else { showError(); }
+            }
+        }
+
+        function clearInput() {
+            document.getElementById('userInput').value = "";
+            document.getElementById('userInput').focus();
+        }
+
+        function showError() {
+            const error = document.getElementById('error-msg');
+            error.style.visibility = "visible";
+            document.getElementById('userInput').value = '';
+        }
+
+        document.getElementById("userInput").addEventListener("keyup", function(event) {
+            if (event.key === "Enter") { handleStep(); }
+        });
+    </script>
 
 </body>
 </html>
