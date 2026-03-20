@@ -2,32 +2,44 @@
 <html lang="lv">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minion Treasure Hunt</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>Treasure Map</title>
     <style>
-        /* Melns fons, lai karte izceltos */
-        body {
+        * {
             margin: 0;
             padding: 0;
-            background-color: #121212;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: #1a1a1a; /* Tumšs fons, lai karte "lec" ārā */
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            overflow: hidden;
+            overflow-x: hidden; /* Neļauj lapai "šūpoties" pa labi/kreisi */
         }
 
-        /* Attēla stils */
+        .map-container {
+            width: 100%;
+            padding: 10px; /* Mazas maliņas, lai bilde nepieliptu pie ekrāna rāmja */
+            display: flex;
+            justify-content: center;
+        }
+
         img {
-            max-width: 100%;
-            max-height: 100vh;
-            display: block;
-            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+            max-width: 100%; /* Bilde nekad nebūs platāka par ekrānu */
+            height: auto;    /* Saglabā proporcijas */
+            border-radius: 8px; /* Maigi noapaļoti stūri modernākam skatam */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); /* Dziļuma efekts */
         }
     </style>
 </head>
 <body>
-    <img src="map.jpg" alt="Treasure Map">
+
+    <div class="map-container">
+        <img src="map.jpg" alt="Minion Treasure Map">
+    </div>
 
 </body>
 </html>
